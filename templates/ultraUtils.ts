@@ -1,58 +1,60 @@
-export type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
-};
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
-export const debounce = <T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): ((...args: Parameters<T>) => void) => {
-  let timeout: NodeJS.Timeout;
+/**
+ * A shorthand for `twMerge(clsx(...inputs))` which is
+ * convenient for merging tailwind classes with other
+ * classes.
+ *
+ * @param inputs - The list of class values to merge.
+ * @returns The merged class string.
+ */
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-};
-
-export const isServer = typeof window === 'undefined';
-
-export const formatDate = (date: Date | string): string => {
-  const d = new Date(date);
-  return d.toLocaleDateString('en-US', {
-    year: 'numeric',
+/**
+ * Formats a date string into a human-readable string
+ * in the format "Month Day, Year". For example, "July 26, 2022".
+ *
+ * @param date - A date string in the ISO 8601 format.
+ * @returns A formatted string representing the date.
+ */
+export function formatDate(date: string) {
+  return new Date(date).toLocaleString('en-US', {
     month: 'long',
     day: 'numeric',
+    year: 'numeric',
   });
-};
+}
 
-export const generateId = (length: number = 8): string => {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  return Array.from({ length }, () =>
-    chars.charAt(Math.floor(Math.random() * chars.length))
-  ).join('');
-};
+/**
+ * Formats the number of views into a human-readable string.
+ *
+ * @param views - The number of views as a string.
+ * @returns A formatted string representing the view count.
+ * If the number is 1 or less, "View" is used; otherwise, "Views" is used.
+ */
+export function formatViews(views: string): string {
+  const nb = Number(views);
 
-export const storage = {
-  get: <T>(key: string): T | null => {
-    if (isServer) return null;
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
-  },
-  set: <T>(key: string, value: T): void => {
-    if (isServer) return;
-    localStorage.setItem(key, JSON.stringify(value));
-  },
-  remove: (key: string): void => {
-    if (isServer) return;
-    localStorage.removeItem(key);
+  if (nb <= 1) {
+    return `${nb} View`;
+  } else {
+    return `${nb} View`;
   }
-};
+}
 
-export const copyToClipboard = async (text: string): Promise<boolean> => {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    return false;
-  }
-};
+/**
+ * Parses a server action response by converting it to a JSON string
+ * and then parsing it back to a JavaScript object. This is useful for
+ * deep cloning objects or ensuring that the response is a serializable
+ * structure.
+ *
+ * @param response - The server action response to be parsed.
+ * @returns A deep cloned version of the input response.
+ */
+
+export function parseServerActionResponse<T>(response: T) {
+  return JSON.parse(JSON.stringify(response));
+}

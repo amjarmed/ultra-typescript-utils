@@ -14,13 +14,12 @@ This will create a `/lib/ultraUtils.ts` file in your project.
 
 ## Available Utilities
 
-- `DeepPartial<T>`: Type utility for making all properties optional recursively
-- `debounce`: Function debouncing utility
-- `isServer`: Check if code is running on server
+- `cn`: Type utility for making all properties optional recursively
+- `debounce`: A shorthand for `twMerge(clsx(...inputs))` which is convenient for merging tailwind classes with other classes.
 - `formatDate`: Date formatting utility
-- `generateId`: Random ID generator
-- `storage`: Type-safe localStorage wrapper
-- `copyToClipboard`: Clipboard utility
+- `formatViews`: Formats the number of views into a human-readable string.
+- `parseServerActionResponse`: Parses a server action response by converting it to a JSON string and then parsing it back to a JavaScript object.
+
 
 ## Usage
 
