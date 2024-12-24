@@ -1,6 +1,6 @@
 {
   "name": "ultra-typescript-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Collection of TypeScript utilities for React and Next.js projects",
   "bin": "./dist/cli.js",
   "files": [
